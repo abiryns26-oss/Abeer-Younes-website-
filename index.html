@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abeer Younes | أدوات ويب خفيفة ومباشرة</title>
+    <meta name="description" content="تطبيقات ويب خفيفة، سريعة، وبسيطة تعمل من المتصفح مباشرة بدون قواعد بيانات أو تثبيت.">
+    
+    <!-- Favicon SVG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+
+    <!-- Google Fonts: Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- CSS Styles -->
+    <style>
+        :root {
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent-gold: #c5a059;
+            --accent-gold-hover: #b08d46;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 12px;
+        }
+
+        .dark {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-card: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --accent-gold: #d4af37;
+            --accent-gold-hover: #e5c158;
+            --border-color: #374151;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        ul { list-style: none; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3.5rem auto;
+        }
+
+        .section-header h2 {
+            font-size: 2.3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold), #b08d46);
+            color: #0b0f19;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-gold);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent-gold);
+            color: #0b0f19;
+            transform: translateY(-3px);
+        }
+
+        /* Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(11, 15, 25, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .icon-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 11rem 0 7rem 0;
+            background: radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.07) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.25;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-content h1 span {
+            color: var(--accent-gold);
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background-color: rgba(212, 175, 55, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-box ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hero-box li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .hero-box li span {
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+        }
+
+        /* Portfolio / Projects Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-gold);
+        }
+
+        .portfolio-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background-color: rgba(212, 175, 55, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            margin-bottom: 0.75rem;
+        }
+
+        .portfolio-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .portfolio-card p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .portfolio-link {
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .portfolio-link:hover {
+            gap: 0.75rem;
+        }
+
+        /* New Links Manager Section */
+        .new-links-section {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .link-builder-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            max-width: 700px;
+            margin: 0 auto 3rem auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .dynamic-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dynamic-link-card {
+            background-color: var(--bg-card);
+            border: 1px dashed var(--accent-gold);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Contact & Footer */
+        .contact {
+            background-color: var(--bg-secondary);
+        }
+
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: #25d366;
+            color: #ffffff;
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #20ba5a;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="var(--accent-gold)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Abeer<span>Younes</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#projects">مشاريعنا</a>
+                <a href="#new-links">روابط جديدة</a>
+                <a href="#contact">تواصل معنا</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="icon-btn" id="theme-toggle" aria-label="تبديل وضع الألوان">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <span class="hero-badge">حلول ويب بسيطة ومباشرة</span>
+                    <h1>أدوات برمجية خفيفة وسريعة <span>بدون تعقيد</span></h1>
+                    <p>نصمم ونطور أدوات ويب مستقلة تعمل مباشرة عبر المتصفح برابط بسيط. <strong>بلا تطبيقات ثقيلة، بلا قواعد بيانات، وبلا برامج إكسل معقدة</strong>؛ فقط أدوات أداء وسرعة تلبي حاجتك الفورية.</p>
+                    <a href="#projects" class="btn btn-primary">استعرض المشاريع</a>
+                </div>
+                <div class="hero-box">
+                    <ul>
+                        <li><span>&#10003;</span> تعمل مباشرة من المتصفح بدون تثبيت</li>
+                        <li><span>&#10003;</span> سريعة، خفيفة، ومرنة للغاية</li>
+                        <li><span>&#10003;</span> لا تحتاج خوادم مدفوعة أو قواعد بيانات</li>
+                        <li><span>&#10003;</span> رابط مباشر وسهل المشاركة لأي عمل</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section (Real Links) -->
+        <section id="projects">
+            <div class="container">
+                <div class="section-header">
+                    <span class="portfolio-tag">أعمالنا المنجزة</span>
+                    <h2>مشاريع وأدوات الويب المباشرة</h2>
+                    <p>نماذج حية لأدوات ويب تفاعلية تم تطويرها لتسيير الأعمال اليومية والإدارية بكل بساطة</p>
+                </div>
+
+                <div class="portfolio-grid">
+                    <!-- 1 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">إدارة الأعمال</span>
+                            <h3>إدارة العملاء (Mini-CRM)</h3>
+                            <p>أداة ويب خفيفة لتنظيم بيانات العملاء والمتابعة السريعة.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Mini-CRM/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 2 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">الإدارة المالية</span>
+                            <h3>المصروفات التشغيلية</h3>
+                            <p>تتبع المصاريف والنفقات والميزانية بتصميم مباشر وسريع.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Operation-Expenses-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 3 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">خدمات مالية</span>
+                            <h3>حاسبة الزكاة للشركات</h3>
+                            <p>أداة مخصصة لحساب زكاة الشركات والأصول التجارية بدقة.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Alzakat-for-company-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 4 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">التسعير</span>
+                            <h3>كيف نضع السعر للمنتج</h3>
+                            <p>دليلك وحاسبة مبسطة لتحديد تسعير المنتجات وتحقيق الهامش.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Price-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 5 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">أرباح المتاجر</span>
+                            <h3>حساب الربح لمحل تجاري</h3>
+                            <p>حساب الإيرادات وصافي الربح للمحلات التجارية لحظياً.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Price-" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 6 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">سيرة ذاتية</span>
+                            <h3>مولد سيرة ذاتية قياسية</h3>
+                            <p>إنشاء وتخصيص سيرة ذاتية احترافية وجاهزة للتحميل الفوري.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/CV-generated-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 7 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">التعليم والأتمتة</span>
+                            <h3>مساعد مدرس</h3>
+                            <p>أداة رقمية لمساعدة المعلمين في تنظيم المهام والتقييمات.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Teacher-assistant-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 8 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">قطاع بحري</span>
+                            <h3>السيرة الذاتية البحرية</h3>
+                            <p>تصميم وتخصيص سيرة ذاتية متخصصة لطواقم القطاع البحري.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/-Sailers-CV-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 9 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">فواتير وتوقيع</span>
+                            <h3>فاتورة إلكترونية عمل فني</h3>
+                            <p>إصدار فواتير رقمية مع دعم التوقيع الإلكتروني للأعمال الفنية.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Art-invoice-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 10 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">هوية رقمية</span>
+                            <h3>كرت عمل رقمي</h3>
+                            <p>بطاقة أعمال رقمية تفاعلية وسريعة للمشاركة الفورية.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Business-card-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+
+                    <!-- 11 -->
+                    <div class="portfolio-card">
+                        <div>
+                            <span class="portfolio-tag">أدوات ملفات</span>
+                            <h3>صورة للقراءة فقط</h3>
+                            <p>تحويل وعرض الصور والبيانات بصيغة آمنة للقراءة فقط.</p>
+                        </div>
+                        <a href="https://abiryns26-oss.github.io/Image-/" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Links Section & Dynamic Builder -->
+        <section id="new-links" class="new-links-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="portfolio-tag">إضافة وتحديث مستمر</span>
+                    <h2>قسم روابط جديدة</h2>
+                    <p>يمكنك استخدام الحقل أدناه لإضافة أي رابط جديد تريد عرضه فوراً في هذه الصفحة وتخزينه على جهازك</p>
+                </div>
+
+                <!-- Form to add new link -->
+                <div class="link-builder-box">
+                    <form id="linkForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="linkTitle">عنوان الرابط أو المشروع</label>
+                                <input type="text" id="linkTitle" class="form-control" placeholder="مثال: لوحة التحكم الجديدة" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="linkCategory">التصنيف</label>
+                                <input type="text" id="linkCategory" class="form-control" placeholder="مثال: أدوات إدارية" required>
+                            </div>
+                        </div>
+                        <div class="form-group full">
+                            <label for="linkUrl">رابط الموقع (URL)</label>
+                            <input type="url" id="linkUrl" class="form-control" placeholder="https://..." required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">إضافة الرابط الجديد</button>
+                    </form>
+                </div>
+
+                <!-- Container where new links will appear dynamically -->
+                <div id="dynamicLinksContainer" class="dynamic-links-grid">
+                    <!-- Dynamic items inserted via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container contact-content">
+                <span class="portfolio-tag">تواصل مباشر</span>
+                <h2>هل لديك فكرة مشروع ترغب بتحويله لرابط بسيط؟</h2>
+                <p>تواصل معنا عبر البريد الإلكتروني أو واتساب لنناقش كيف نبسط فكرتك إلى أداة ويب سريعة ومباشرة.</p>
+                <a href="https://wa.me/963991601723" target="_blank" class="whatsapp-btn">
+                    تواصل عبر واتساب (0991601723)
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Abeer Younes. جميع الحقوق محفوظة. أدوات ويب خفيفة ومباشرة.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Theme & Dynamic Links Management -->
+    <script>
+        // Current Year
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            themeToggle.textContent = htmlElement.classList.contains('dark') ? '🌙' : '☀️';
+        });
+
+        // Dynamic Links Management (LocalStorage)
+        const linkForm = document.getElementById('linkForm');
+        const dynamicLinksContainer = document.getElementById('dynamicLinksContainer');
+
+        function loadSavedLinks() {
+            const saved = JSON.parse(localStorage.getItem('abiryns_new_links') || '[]');
+            dynamicLinksContainer.innerHTML = '';
+            
+            if (saved.length === 0) {
+                dynamicLinksContainer.innerHTML = '<p style="text-align:center; color:var(--text-secondary); grid-column:1/-1;">لا توجد روابط جديدة مضافة حالياً. استخدم النموذج بالأعلى لإضافة أول رابط.</p>';
+                return;
+            }
+
+            saved.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'portfolio-card';
+                card.innerHTML = `
+                    <div>
+                        <span class="portfolio-tag">${item.category}</span>
+                        <h3>${item.title}</h3>
+                        <p style="word-break: break-all; font-size:0.85rem;">${item.url}</p>
+                    </div>
+                    <div style="display:flex; gap:1rem; align-items:center; margin-top:1rem;">
+                        <a href="${item.url}" target="_blank" class="portfolio-link">فتح الرابط &larr;</a>
+                        <button onclick="deleteLink(${index})" style="color:#ef4444; font-size:0.85rem; font-weight:600;">حذف</button>
+                    </div>
+                `;
+                dynamicLinksContainer.appendChild(card);
+            });
+        }
+
+        linkForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('linkTitle').value.trim();
+            const category = document.getElementById('linkCategory').value.trim();
+            const url = document.getElementById('linkUrl').value.trim();
+
+            if (title && category && url) {
+                const saved = JSON.parse(localStorage.getItem('abiryns_new_links') || '[]');
+                saved.push({ title, category, url });
+                localStorage.setItem('abiryns_new_links', JSON.stringify(saved));
+                linkForm.reset();
+                loadSavedLinks();
+            }
+        });
+
+        window.deleteLink = function(index) {
+            const saved = JSON.parse(localStorage.getItem('abiryns_new_links') || '[]');
+            saved.splice(index, 1);
+            localStorage.setItem('abiryns_new_links', JSON.stringify(saved));
+            loadSavedLinks();
+        }
+
+        // Load links on page load
+        loadSavedLinks();
+    </script>
+</body>
+</html>
